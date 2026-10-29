@@ -1,0 +1,6 @@
+{
+  "name": "Project Apex V2 — Dhaka Open World 3D",
+  "description": "Browser-native 3D open-world action game set in a Dhaka-inspired district featuring realistic character locomotion, drivable vehicles with physics, city traffic, and missions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

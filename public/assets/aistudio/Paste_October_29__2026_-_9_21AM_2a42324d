@@ -1,0 +1,534 @@
+# PROJECT APEX V2 — MASTER PRODUCTION PROMPT
+## Browser-native open-world action game | Dhaka-inspired city | Asset-first development
+
+### YOUR MISSION
+
+Act as a senior professional game-development team comprising a technical director, gameplay programmer, web graphics engineer, physics engineer, technical artist, 3D asset pipeline engineer, AI/navigation engineer, QA engineer, performance engineer, and release engineer.
+
+Build **Project Apex V2**, an original browser-based 3D open-world action game set in a Dhaka-inspired urban environment. Take modern AAA open-world games as quality and gameplay references, not as assets or code to copy. Do not promise GTA 6 parity. Prioritize the best verifiable quality achievable with the selected architecture, available assets, browser limitations, and hardware.
+
+The game must actually be playable. A collection of documentation files, a static mockup, a beautiful screenshot, or a large collection of unfinished systems does not count as a completed game.
+
+## 1. APPROVED PROJECT REQUIREMENTS
+
+These decisions are already made. Do not reopen them without a material technical or legal reason.
+
+- **Project:** Project Apex V2.
+- **Implementation:** Clean V2 foundation. Do not patch V1 into V2 or copy its code wholesale.
+- **Rendering:** Browser-native 3D, rendered locally on the player's device.
+- **Stack:** TypeScript, Three.js, React Three Fiber where appropriate, and Rapier 3D physics. Use compatible, stable package versions verified by an actual build.
+- **Build tooling:** Vite or another justified lightweight web build tool.
+- **World:** Begin with one small, recognizable, geographically grounded Dhaka neighborhood. Expand after quality and performance gates pass.
+- **Assets:** Prefer existing, licensed, game-ready 3D assets and packs. Customize and optimize them in Blender when needed. Create original assets for important missing elements.
+- **First playable milestone:** A human-like third-person character, one detailed drivable vehicle, one coherent district, basic traffic, reliable collision and physics, and one complete mission.
+- **Hosting:** Free or low-cost web hosting where practical.
+- **Target controls:** Desktop browser, keyboard and mouse first. Keep future gamepad support possible.
+- **Build method:** Plan, prototype, integrate, verify, and incrementally expand.
+
+If V1 is available, inspect it read-only for architectural lessons and known bugs. Preserve the original repository and all its work. The reference repository is:
+
+https://github.com/MAARCoder2/Project-GTA-6
+
+Explicitly investigate these known risk areas: reversed or inconsistent controls, aiming and hit detection through walls, poor character aiming animations, vehicle entry/exit and collision failures, duplicated physics or vehicle updates, primitive box-shaped characters/cars/buildings, NPC/traffic/police issues, mission completion/restart bugs, overly flashy UI, and contradictory documentation that claims completion without actual testing. Verify each issue from the current source rather than assuming it still exists.
+
+Do not reset, delete, overwrite, or force-push to the V1 repository. If V1 cannot be accessed, document that limitation and proceed with clean V2.
+
+## 2. CRITICAL STRATEGY: FIND EXISTING CITY ASSETS BEFORE BUILDING EVERYTHING FROM SCRATCH
+
+The user wants to save time by reusing legally usable 3D buildings, city environments, characters, vehicles, street props, and other existing models.
+
+Therefore, **asset discovery and technical verification must happen before committing to a full custom city-production approach.**
+
+Evaluate the following options.
+
+### Option A — Licensed assets plus Dhaka geographic layout (default strategy)
+
+Use an authorized geospatial source for roads, intersections, and building footprints. Source existing licensed city/environment packs, modular buildings, roads, street furniture, vehicles, human characters, materials, and props.
+
+Populate the selected Dhaka area using those assets. Generate placements and permitted visual variations programmatically. Build custom models only for distinctive landmarks or essential missing objects.
+
+This approach balances development speed, city recognizability, gameplay control, and browser performance.
+
+### Option B — Streamed 3D building layers
+
+Investigate Cesium OSM Buildings and other authorized 3D Tiles sources as potential live-streamed world layers.
+
+Cesium OSM Buildings provides a global 3D building layer derived from OpenStreetMap. Verify its current terms, attribution, availability, pricing/quotas, renderer compatibility, and suitability for the intended gameplay.
+
+Do not assume this layer is photorealistic, can be extracted into standalone models, or supplies usable game collision geometry. Build a small compatibility prototype before adopting it.
+
+If using this approach requires CesiumJS or a Three.js 3D Tiles renderer alongside the chosen gameplay stack, document the added complexity. Do not combine rendering systems without proving the benefits.
+
+### Option C — Google Photorealistic 3D Tiles
+
+Do not treat Google Maps or Google Earth as a free downloadable 3D asset library.
+
+Do not scrape, bulk-download, extract, reverse engineer, trace, cache outside permitted rules, convert, or create standalone assets from Google Photorealistic 3D Tiles. Do not use Google imagery to trace road networks or building geometry.
+
+Only consider live Google tile streaming if the exact intended use in this browser game is confirmed to be permitted by the current agreement and product policies. Verify required attribution, API-key security, billing, quotas, caching restrictions, coverage, and gameplay limitations. If the intended use cannot be confirmed, reject this approach for the core playable world and proceed with Option A.
+
+### Option D — Complete downloadable city/environment pack
+
+Search for a prebuilt city or urban environment pack with explicit rights to embed and distribute it within a game.
+
+Verify:
+- Whether actual source files are available for permitted download.
+- Whether the models can be converted to GLB/glTF.
+- Material and texture quality.
+- Model scale and coordinate conventions.
+- Whether collision geometry can be created or is included.
+- Whether the asset license permits modification and inclusion in a distributed web game.
+- Whether the package is too large or complex for browser performance.
+- Whether the package contains only Unreal/Unity assets that would require substantial conversion.
+
+Do not assume that a marketplace screenshot, an online model viewer, or a free-to-view model proves that its source files are downloadable or legally reusable.
+
+### Required decision
+
+Compare the candidates against:
+1. Legal permission and redistribution rights.
+2. Availability of actual files or an authorized runtime stream.
+3. Realistic visual quality.
+4. Suitability for Dhaka.
+5. Browser/GLB conversion requirements.
+6. Animation and rig compatibility.
+7. Collision and physics requirements.
+8. Runtime performance and memory cost.
+9. Cost and download limitations.
+10. Long-term maintainability.
+
+Document the evidence and select one primary strategy and, where justified, one supporting strategy. If there is no suitable complete city pack, use a hybrid approach rather than extending research indefinitely.
+
+## 3. OFFICIAL RESEARCH SOURCES
+
+Use these as starting points. Verify current terms and the licence of each selected asset before use.
+
+**Technology**
+- Three.js: https://threejs.org/docs/
+- GLTFLoader: https://threejs.org/docs/pages/GLTFLoader.html
+- React Three Fiber: https://r3f.docs.pmnd.rs/
+- Rapier: https://rapier.rs/docs/
+- Blender: https://docs.blender.org/manual/en/latest/
+- Vite: https://vite.dev/guide/
+- TypeScript: https://www.typescriptlang.org/docs/
+
+**Map and 3D city data**
+- OpenStreetMap licence: https://www.openstreetmap.org/copyright
+- Geofabrik regional extracts: https://download.geofabrik.de/
+- Overpass API documentation: https://wiki.openstreetmap.org/wiki/Overpass_API
+- Cesium OSM Buildings: https://cesium.com/platform/cesium-ion/content/cesium-osm-buildings/
+- Cesium ion terms: https://cesium.com/legal/terms-of-service/
+- Cesium content-use guidance: https://cesium.com/learn/ion/content-usage-and-attribution-guide/
+- Google Map Tiles overview: https://developers.google.com/maps/documentation/tile/overview
+- Google Map Tiles policies: https://developers.google.com/maps/documentation/tile/policies
+
+**3D assets and environment models**
+- Fab: https://www.fab.com/
+- Fab EULA: https://www.fab.com/eula
+- Sketchfab: https://sketchfab.com/
+- Sketchfab licence guidance: https://sketchfab.com/licenses
+- Sketchfab download guidelines: https://sketchfab.com/developers/download-api/guidelines
+- Poly Haven: https://polyhaven.com/
+- Poly Haven licence: https://polyhaven.com/license
+- Kenney: https://kenney.nl/assets
+- OpenGameArt: https://opengameart.org/
+
+These are discovery sources, not blanket permission. Verify the exact chosen asset, file availability, current licence, attribution, and commercial/redistribution permissions.
+
+## 4. ASSET LICENSING AND PROVENANCE — MANDATORY GATE
+
+Maintain `docs/ASSET_REGISTER.md`. Every model, texture, audio file, font, map extract, or other third-party asset must have:
+
+- Asset ID and name.
+- Canonical source URL.
+- Creator/provider.
+- Exact licence and licence URL.
+- Date checked and obtained.
+- Permission for commercial use, modification, embedding, and redistribution.
+- Attribution requirements.
+- Restriction on standalone redistribution, if applicable.
+- Original file location and optimized runtime file location.
+- Format, file size, intended use, and transformation history.
+- Validation status.
+
+Use clear statuses such as `CANDIDATE`, `LICENSE_VERIFIED`, `DOWNLOADED`, `OPTIMIZED`, `INTEGRATION_TESTED`, `APPROVED_FOR_RELEASE`, and `REJECTED`.
+
+Prefer assets explicitly licensed for game use and redistribution inside a larger project, such as suitably licensed marketplace assets, CC0, or compatible CC BY assets.
+
+Do not use NC assets in a potentially commercial build without separate permission. Do not use ND assets if the required modification is prohibited. Review ShareAlike and database obligations before shipping derivatives.
+
+A marketplace licence can allow distributing a game containing an asset while prohibiting redistribution of the asset by itself. Do not expose restricted source files through public hosting or repositories.
+
+For OpenStreetMap, verify ODbL obligations and required attribution, including `© OpenStreetMap contributors`. Use authorized extracts/providers and do not scrape public tile servers or bypass usage restrictions.
+
+Do not call an asset “verified” until you have inspected its actual licence. Do not bypass logins, access controls, payment requirements, download restrictions, or rate limits. If an essential asset requires a user-controlled purchase or credential, document the blocker and ask for that specific action. Otherwise continue with suitable alternatives.
+
+## 5. ANTIGRAVITY TOOLS, PLUGINS, MCP AND SUPERPOWERS
+
+Inspect the actual Antigravity environment before selecting tools.
+
+Check the availability of:
+- Agent skills and subagents.
+- Superpowers or equivalent brainstorming/planning/TDD/debugging workflows.
+- Plugins and MCP servers.
+- Browser automation and debugging.
+- Node.js, npm, TypeScript, Git, Blender, and asset-processing tools.
+- Available web research and download capabilities.
+
+Use Superpowers if it is genuinely accessible. If it is not available, document that and use the available tools to reproduce its useful planning, task breakdown, testing, and review workflow. Never claim to use a tool that is not accessible.
+
+Record the findings in `docs/research/TOOL_AND_PLUGIN_AUDIT.md`.
+
+## 6. WORKSPACE AND CLEAN V2 FOUNDATION
+
+Inspect the current working directory and Git status.
+
+If the workspace contains only this prompt, initialize a new V2 project there. Do not waste time repeatedly asking where the old project is. If V1 cannot be accessed, record it and proceed.
+
+Create V2 in a separate directory and Git repository or branch. Preserve V1. Never commit API keys or secrets. Provide `.env.example` with placeholders only; never expose private credentials in browser bundles, logs, commits, or documentation.
+
+Record the environment, installed runtimes, available test browsers, accessible Blender tooling, and hardware/profile information in `docs/research/ENVIRONMENT_AUDIT.md`.
+
+## 7. PHASE 0 — RESEARCH AND FEASIBILITY
+
+Perform an actual research and environment audit before implementation.
+
+Create:
+- `docs/research/ENVIRONMENT_AUDIT.md`
+- `docs/research/V1_LESSONS_AND_BUG_AUDIT.md`
+- `docs/research/TOOL_AND_PLUGIN_AUDIT.md`
+- `docs/research/ASSET_SOURCE_AND_LICENSE_RESEARCH.md`
+- `docs/research/DHAKA_MAP_DATA_RESEARCH.md`
+- `docs/research/CITY_ASSET_STRATEGY_COMPARISON.md`
+- `docs/research/TECHNOLOGY_EVALUATION.md`
+- `docs/research/FEASIBILITY_AND_RISKS.md`
+
+Select a realistic initial district based on map-data availability, recognizable street layout, and manageable scope.
+
+Record the exact source URLs, licences, actual asset candidates, and what was genuinely verified. Separate facts from assumptions and unknowns. Never claim generated building heights or architecture are accurately measured unless they have a verified permitted source.
+
+## 8. PHASE 1 — DOCUMENTATION BEFORE CORE IMPLEMENTATION
+
+Create a consistent documentation set before implementing core gameplay:
+
+- `README.md` — project overview, setup, build, test, and deployment.
+- `docs/PRD.md` — product requirements and scope.
+- `docs/GAME_DESIGN_DOCUMENT.md` — game loop, player experience, missions, world, and progression.
+- `docs/VISUAL_DIRECTION.md` — references and visual quality bar.
+- `docs/TECHNICAL_ARCHITECTURE.md` — module boundaries, update loops, state ownership, dependencies, and data flow.
+- `docs/ASSET_PIPELINE.md` — sourcing, licence review, Blender workflow, conversion, compression, and import validation.
+- `docs/ASSET_REGISTER.md` — asset provenance and licence status.
+- `docs/WORLD_AND_MAP_PIPELINE.md` — map data, coordinates, roads, buildings, chunking, and expansion.
+- `docs/CHARACTER_AND_ANIMATION_SPEC.md` — rigs, animation, materials, scale, and controller integration.
+- `docs/VEHICLE_AND_PHYSICS_SPEC.md` — vehicle control, collision, interaction, and physics constraints.
+- `docs/AI_AND_TRAFFIC_SPEC.md` — navigation, traffic, pedestrians, and AI behavior.
+- `docs/UX_AND_CONTROLS.md` — controls, HUD, menus, and user feedback.
+- `docs/RENDERING_AND_PERFORMANCE.md` — performance budget, memory, draw calls, LOD, and streaming.
+- `docs/SECURITY_AND_PRIVACY.md` — secrets, dependencies, and external services.
+- `docs/TEST_STRATEGY.md` — unit, integration, browser, gameplay, and performance testing.
+- `docs/ACCEPTANCE_CRITERIA.md` — measurable pass/fail conditions.
+- `docs/IMPLEMENTATION_ROADMAP.md` — task order, dependencies, milestones, and gates.
+- `docs/DECISIONS.md` — architectural decisions and rejected alternatives.
+- `docs/RISKS_AND_MITIGATIONS.md` — technical, legal, performance, cost, and delivery risks.
+- `docs/READINESS_REVIEW.md` — implementation readiness gate.
+- `docs/TASK_LEDGER.md` — authoritative task tracker.
+- `docs/PROJECT_STATUS.md` — verified progress.
+- `docs/TEST_RESULTS.md` — dated test results and evidence.
+- `CHANGELOG.md` — meaningful changes.
+
+Add further documents only when necessary. Avoid redundant documents and contradictions. Every major requirement must have an ID and map to implementation tasks and acceptance tests.
+
+## 9. PHASE 2 — ARCHITECTURE AND VISUAL DESIGN
+
+Use a modular architecture that separates:
+- Rendering and scene management.
+- World/map data and streaming.
+- Asset management.
+- Physics.
+- Player controller and character animation.
+- Vehicle controller.
+- Interactions.
+- Navigation, traffic, and pedestrian AI.
+- Missions.
+- Camera and input.
+- HUD/UI.
+- Audio.
+- Performance diagnostics.
+
+Define coordinate axes, world units, model scale, model orientation, pivots, spawn points, collision layers, and asset naming conventions.
+
+Do not introduce duplicated physics loops, competing control states, or uncontrolled global mutable state. Synchronize physics and rendering intentionally. Use a stable fixed-step physics update where appropriate.
+
+Create a distinctive Dhaka-inspired art direction: believable South Asian urban streets, realistic human proportions, detailed cars, varied buildings, materials, signs, props, vegetation, lighting, and restrained but readable UI.
+
+GTA is a reference for ambition, not something to reproduce asset-for-asset.
+
+## 10. PHASE 3 — ASSET ACQUISITION AND INTEGRATION
+
+Search actual asset catalogues and provider websites. Shortlist real downloadable candidates; do not invent URLs or claim that assets are already acquired.
+
+Prioritize:
+1. A complete legally reusable urban/city environment pack, if available.
+2. Modular buildings, roads, sidewalks, street furniture, and materials.
+3. One game-ready human character and necessary animations.
+4. One detailed vehicle suitable for web conversion.
+5. Traffic vehicles, NPCs, signs, trees, props, and ambient audio.
+
+Avoid purchasing assets or accepting paid terms without user approval. If an asset is inaccessible or requires a payment/login, document the blocker and use another viable option where possible.
+
+Use an organized workspace, for example:
+
+`assets/source/`  
+`assets/blender/`  
+`assets/exports/`  
+`assets/optimized/`  
+`assets/manifests/`  
+`tools/asset-pipeline/`
+
+Keep original sources separate from modified and optimized files. Do not expose restricted assets publicly.
+
+### Character quality gate
+
+The final character must have credible human proportions, proper silhouette, materials/textures, UVs, skeleton, skin weights, and suitable animation. It must not be a stack of boxes or a capsule-only placeholder presented as final.
+
+Validate idle, walk, run, turning, stop/start, ground contact, model orientation, scale, and camera behavior. Retarget compatible licensed animations if needed and test in Blender and in the browser.
+
+### Vehicle quality gate
+
+The first vehicle must be detailed enough to read as an actual car at gameplay distance. Check body proportions, wheels, glass, lights/materials, scale, pivots, steering, and collision setup. Separate render meshes from simple collision proxies. Test the model and physics in the browser.
+
+### City/environment quality gate
+
+The district must not be a flat plane populated by identical boxes. Use varied licensed environment assets, coherent building placements, sidewalks, curbs, road markings, signs, street props, vegetation, and a few high-quality landmark buildings.
+
+Use procedural tools for placement, repeatable variations, road geometry, and missing low-priority elements—not as a substitute for required model quality.
+
+### Browser asset pipeline
+
+Prefer GLB/glTF when suitable. Validate model scale, materials, textures, animation clips, compression support, and external dependencies. Optimize assets only if visual quality and animations remain correct.
+
+Create a browser-based asset validation gallery before integrating a large quantity of assets into the main gameplay scene.
+
+## 11. PHASE 4 — DHAKA MAP PIPELINE
+
+1. Select a small, recognizable district using permitted geospatial data.
+2. Document its boundary, coordinates, source and licence.
+3. Acquire roads, intersections, building footprints, and related features from an authorized provider.
+4. Convert geographic coordinates to a consistent local metric coordinate system.
+5. Validate scale, orientation, road connectivity, invalid polygons, duplicated geometry, and missing data.
+6. Generate roads, intersections, curbs, sidewalks and road markings.
+7. Populate building footprints with licensed 3D assets selected according to plot size and visual role.
+8. Create traffic navigation and pedestrian path data.
+9. Create suitable collision proxies.
+10. Divide the district into manageable chunks and load/unload them as the player moves.
+11. Validate the city in an inspection scene before treating it as gameplay-ready.
+
+Distinguish measured real-world facts from inferred or generated details. Never use prohibited Google imagery as the source for tracing roads or creating buildings.
+
+Do not try to build all of Dhaka in the first release. Expand only after the test district passes gameplay and performance gates.
+
+## 12. PHASE 5 — GAMEPLAY AND PHYSICS
+
+### Character
+Implement third-person movement, turning, stopping, animation transitions, stable camera follow, camera collision, ground detection, and building/road collision. Validate input mapping and ensure controls are not reversed.
+
+### Vehicle
+Implement acceleration, braking, reverse, steering, wheel synchronization, collision, entry/exit, and explicit player/vehicle state transitions. Entry/exit must use valid positions and must not teleport the character into a wall or vehicle mesh. Avoid duplicated physics updates and unstable force application.
+
+### Physics and interactions
+Use Rapier for appropriate rigid bodies, colliders, raycasts, contact events, and sensors. Keep render meshes and collision geometry separate. Use correct collision groups and nearest-hit logic. Shooting/interaction rays must respect blocking geometry when required.
+
+Test ground contact, wall collisions, overlap cases, impacts, speed-related tunnelling, and vehicle recovery.
+
+### Traffic and pedestrians
+Begin with a bounded number of NPCs and vehicles. Use road graphs and navigation paths. Prevent movement through buildings, random direction reversals, permanent deadlocks, duplicated updates, and uncontrolled entity growth. Scale up only after profiling.
+
+### First mission
+Implement one complete, playable mission with:
+- Start trigger and instructions.
+- Clear objectives.
+- A route or destination inside the district.
+- At least one meaningful player/vehicle interaction.
+- Completion and failure conditions.
+- Clear user feedback.
+- Restart/retry behavior.
+- Reproducible acceptance tests where practical.
+
+A mission screen that cannot be completed in actual gameplay is not complete.
+
+## 13. PHASE 6 — BROWSER PERFORMANCE
+
+The core game must render on the player's device. Do not depend on cloud GPU streaming to meet the initial requirements.
+
+Use and measure:
+- Frustum and distance culling.
+- LOD for buildings, vehicles, characters, and props.
+- Instancing and shared materials.
+- Compressed geometry and textures.
+- District/region streaming.
+- Bounded shadow rendering and selective expensive effects.
+- Asynchronous asset loading and loading feedback.
+- Resource disposal for geometries, textures, materials, listeners and physics bodies.
+- Stable physics timing and bounded AI updates.
+- Low/medium/high quality presets.
+
+Set explicit performance budgets after inspecting the target environment and asset sizes. Track compressed download size, decoded texture memory, geometry, draw calls, visible entities, time to interactive, frame times, and memory behavior.
+
+Target 60 FPS on a documented suitable desktop configuration where feasible. Treat this as a testable goal, not a promise. Measure frame-time percentiles and test with real gameplay content. If the target fails, profile, optimize, reduce scope, or document the limitation.
+
+Do not claim compatibility with every browser or computer. Test and document a real compatibility matrix.
+
+## 14. PHASE 7 — IMPLEMENTATION MILESTONES
+
+### M0 — Foundation
+Create the V2 project, dependency lockfile, lint/type-check/build scripts, browser entry point, smoke test, and setup instructions.
+
+**Gate:** clean install, successful type-check, build and startup with recorded results.
+
+### M1 — Asset/rendering prototype
+Load one licensed detailed human character and one detailed vehicle in a browser scene. Add lighting/materials, camera, and asset validation tools.
+
+**Gate:** models exist in the workspace, have verified license records, render correctly, and are not primitive box placeholders.
+
+### M2 — Character and physics
+Implement player controller, camera, ground/wall collision, input mapping and animation states.
+
+**Gate:** repeatable movement and collision tests pass, with no reversed controls or falling through geometry.
+
+### M3 — Vehicle
+Implement vehicle physics/control, wheel synchronization, collision, entering/exiting, and recovery.
+
+**Gate:** repeated drive, brake, reverse, collide, exit, re-enter and restart tests pass.
+
+### M4 — Dhaka district
+Implement map data, roads, building placement, assets, collision, navigation, and chunk loading.
+
+**Gate:** coherent geographic layout, credible visual quality, navigable world, and measured performance within budget.
+
+### M5 — Traffic, pedestrians and mission
+Implement limited traffic, pedestrian behavior, and one end-to-end mission.
+
+**Gate:** the mission can be started, completed, failed/restarted as designed, and replayed without critical errors.
+
+### M6 — Polish and optimize
+Improve materials, lighting, animations, UI, audio where appropriate, LOD, streaming, quality presets, and cleanup.
+
+**Gate:** documented performance results are acceptable, with remaining deviations addressed or clearly recorded.
+
+### M7 — Release candidate
+Build the production version, deploy to a suitable free/low-cost host, and test the deployed URL.
+
+**Gate:** deployed game works in a supported browser, no release-blocking errors, asset licences/attribution reviewed, release instructions complete.
+
+Do not expand to all of Dhaka until M5 and the performance gate pass.
+
+## 15. TESTING AND EVIDENCE
+
+Create automated tests where practical and use browser automation if genuinely available.
+
+Test:
+- Startup and asset loading.
+- Character movement, animation, ground contact and collision.
+- Camera follow and camera collision.
+- Vehicle steering, braking, reverse and impacts.
+- Entry/exit and state transitions.
+- Hit detection and ray obstruction.
+- Traffic navigation and obstacle handling.
+- Mission completion/failure/restart.
+- Chunk loading/unloading and resource disposal.
+- Build, deployment and browser startup.
+- Performance at a documented scene load.
+
+Every test record must include:
+- Test ID and linked requirement.
+- Command or reproduction steps.
+- Environment and browser.
+- Expected and actual results.
+- Pass/fail.
+- Evidence location.
+- Known limitations.
+
+A screenshot cannot prove that physics, AI or a mission works. Use reproducible steps and assertions wherever possible.
+
+Never fabricate logs, downloaded files, test results, profiler metrics, successful builds, deployment links, or completion percentages.
+
+Use statuses such as `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED`, `IMPLEMENTED_UNVERIFIED`, `VERIFIED`, and `DEFERRED`. Untested work must never be marked verified.
+
+## 16. READINESS REVIEW
+
+Before core gameplay implementation, create `docs/READINESS_REVIEW.md`.
+
+Verify:
+- Environment and tools were actually inspected.
+- Superpowers and other tool availability is reported accurately.
+- A documented asset strategy has real candidates and licence findings.
+- No prohibited Google tile extraction is planned.
+- A permitted map source and initial district have been selected.
+- A usable character and vehicle can be sourced and converted.
+- Package versions are compatible.
+- Architecture, coordinate system, scale, pivots and collision rules are defined.
+- Milestones have measurable acceptance tests.
+- Performance budget and test environment are documented.
+- Critical legal, technical, hosting and hardware risks have mitigation paths.
+
+Resolve blockers or document bounded alternatives. Once the gate passes, proceed without waiting for approval for ordinary reversible decisions. Ask the user only for genuine blockers such as required payment, credentials, permission, or an irreversible action.
+
+## 17. PRESERVE CONTEXT ACROSS SESSIONS
+
+Do not rely on conversational memory alone.
+
+At the end of each meaningful work session:
+1. Update `docs/TASK_LEDGER.md`.
+2. Update `docs/PROJECT_STATUS.md` with verified facts only.
+3. Update `docs/DECISIONS.md` when a material decision changes.
+4. Create/update `docs/NEXT_SESSION_CONTEXT.md` with current milestone, branch, changed files, last successful build/test, failures, blockers and the next three tasks.
+5. Commit a coherent change when appropriate.
+
+At the start of a resumed session, read the context files and verify the actual working tree. Never silently change an approved requirement.
+
+## 18. TASK TRACKING AND CHANGE CONTROL
+
+Every task requires a unique ID, linked requirement, deliverable, dependencies, acceptance test, status, and evidence.
+
+After each milestone:
+1. Run tests.
+2. Inspect the diff for regressions.
+3. Update documentation and task status.
+4. Record remaining risks.
+5. Commit a coherent change when appropriate.
+6. Begin the next milestone unless genuinely blocked.
+
+For bugs, identify the root cause, add a regression test, fix it, and verify it. Avoid unrelated refactors during bug fixing.
+
+Do not claim that the project is 100% complete while required tasks or release gates remain open.
+
+## 19. DEFINITION OF SUCCESS
+
+The initial release succeeds when a user can open the deployed website in a supported desktop browser, control a natural-looking third-person character, explore a recognizable Dhaka-inspired district, enter and drive a detailed vehicle, encounter working basic traffic, use reliable collision/interaction systems, and complete one mission.
+
+The project must also contain:
+- An organized asset library and complete provenance/licence register.
+- A repeatable Blender-to-browser pipeline.
+- A compliant source-grounded map pipeline.
+- Modular architecture for future district expansion.
+- Reproducible tests and dated evidence.
+- Actual performance measurements and declared device/browser requirements.
+- A working deployed build.
+- Honest documentation of unfinished or deferred features.
+
+Treat larger Dhaka coverage, more vehicles/NPCs, advanced police AI, more missions, detailed interiors and advanced visual effects as later milestones—not as features already delivered.
+
+## 20. START NOW
+
+Begin immediately.
+
+First, return a concise evidence-based summary of:
+1. Workspace and V1 inspection.
+2. Actual tools, plugins, MCP servers and Superpowers availability.
+3. Candidate city assets and map sources.
+4. Licensing, performance and technical risks.
+5. The recommended city-asset strategy and why.
+
+Then execute Phase 0 and create the research documents. Complete the readiness review, then start M0 and M1. **Do not stop after creating documents or a static mockup.**
+
+At every step, distinguish what has been researched, downloaded, integrated, tested, and verified. Build a small, genuinely playable, visually convincing browser game first. Expand it only after the initial district is stable, legally compliant, tested, and performant.

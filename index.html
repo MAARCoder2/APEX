@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Apex V2 — Dhaka Open World 3D</title>
+    <meta name="description" content="Browser-native 3D open-world action game set in a Dhaka-inspired district featuring realistic character locomotion, drivable vehicles with physics, city traffic, and missions." />
+    <meta property="og:title" content="Project Apex V2 — Dhaka Open World 3D" />
+    <meta property="og:description" content="Browser-native 3D open-world action game set in a Dhaka-inspired district featuring realistic character locomotion, drivable vehicles with physics, city traffic, and missions." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      (function() {
+        try {
+          var _origFetch = typeof window !== 'undefined' && window.fetch ? window.fetch.bind(window) : null;
+          Object.defineProperty(window, 'fetch', {
+            get: function() {
+              return _origFetch;
+            },
+            set: function(fn) {
+              _origFetch = fn;
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (_) {}
+
+        if (typeof window !== 'undefined') {
+          window.addEventListener('error', function(event) {
+            if (event && event.filename && event.filename.indexOf('chrome-extension://') !== -1) {
+              event.preventDefault();
+              event.stopImmediatePropagation();
+              return true;
+            }
+          }, true);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
